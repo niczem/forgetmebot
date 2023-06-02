@@ -90,7 +90,8 @@ class Connector:
                             print(self.sessions)
                             print(old_message_id, new_message_id,replied_msg.id)
                             new_message_id = replied_msg.id
-                            old_message_id = replied_msg.reply_to.reply_to_msg_id
+                            if replied_msg.reply_to:
+                                old_message_id = replied_msg.reply_to.reply_to_msg_id
                         try:
                             self.sessions.updateSessionIndex(old_message_id,new_message_id)
                         except:
