@@ -1,11 +1,10 @@
 from gpt4all import GPT4All
-
+from dotenv import load_dotenv
 
 class Actions:
     def __init__(self):
-        self.client = ""
-        self.gptj = GPT4All("ggml-gpt4all-j-v1.3-groovy")
-
+        load_dotenv()
+        self.gptj = GPT4All(os.getenv('model'))
     def generateReply(self,messages):
             print('messages')
             print(messages)
