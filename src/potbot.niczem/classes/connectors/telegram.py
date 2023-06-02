@@ -72,24 +72,13 @@ class Connector:
                         else:
                             old_message_id = event.message.id
 
-                        new_message_id = old_message_id
-
-                        print("old, new")
-                        print(self.sessions.sessions)
-                        print(old_message_id, new_message_id,replied_msg.id, event.message.id)
-                        print(replied_msg, event.message)
                         new_message_id = replied_msg.id
                         old_message_id = replied_msg.id
-                        
-                        #move session to new id, easier than looping ab the replies
-                        #' if new_message_id != old_message_id:
-                        #    self.sessions.updateSessionIndex(old_message_id,new_message_id)
                         
                         if old_message_id == new_message_id:
                             print("old_message_id == new_message_id old, new")
                             print(self.sessions)
                             print(old_message_id, new_message_id,replied_msg.id)
-                            new_message_id = replied_msg.id
                             if replied_msg.reply_to:
                                 old_message_id = replied_msg.reply_to.reply_to_msg_id
                         try:
@@ -104,7 +93,7 @@ class Connector:
                         try:
                             self.sessions.addMessageToSession(new_message_id, message)
                         except:
-                            print("could not open session try with", old_message_id)
+                            print("could not open session try with", replied_msg.reply_to.reply_to_msg_id)
                             self.sessions.addMessageToSession(replied_msg.reply_to.reply_to_msg_id, message)
 
                         
@@ -118,17 +107,13 @@ class Connector:
                         print("not reply")
                         self.sessions.createSession(event.message.id,message)
                         reply = actions.generateReply(self.sessions.getSession(event.message.id)['messages'])
-                        print("replyObj:")
-                        print(reply)
                         self.sessions.addMessageToSession(event.message.id, reply['content'], "assistant")
                         reply = reply["content"]
                         #reply = gptj.chat_completion(sessions[event.message.id])
 
                     # Reply to the message
                     print("reply")
-                    print(reply)
                     replyObj = await event.reply(reply)
-                    print(replyObj.id)
                     if replyObj.id and 'new_message_id' in locals():
                         self.sessions.updateSessionIndex(new_message_id,replyObj.id)
             else:
