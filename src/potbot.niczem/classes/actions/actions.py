@@ -1,3 +1,4 @@
+import os
 from gpt4all import GPT4All
 from dotenv import load_dotenv
 
@@ -6,8 +7,6 @@ class Actions:
         load_dotenv()
         self.gptj = GPT4All(os.getenv('model'))
     def generateReply(self,messages):
-            print('messages')
-            print(messages)
             reply = self.gptj.chat_completion(messages)
             return reply["choices"][0]["message"]
 
