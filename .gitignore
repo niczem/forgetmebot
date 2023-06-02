@@ -1,6 +1,6 @@
 #applicationdata
 ./data/*
-./data/**/*
+./data/*/*
 # Editors
 .vscode/
 .idea/
