@@ -20,11 +20,13 @@ class Connector:
         # Create a Telegram client
         client = TelegramClient('bot_session', api_id, api_hash).start(bot_token=bot_token)
 
-        def messageCallback(pattern: List,prompts):
+        def messageCallback(pattern: List,callback):
             # Event handler for incoming messages and message replies
             @client.on(events.NewMessage(pattern=pattern))  # Custom command to start the bot
             async def start(event):
-                prompts.append({"role":"user","content":str(event.message.message.replace(pattern,''))})
+                input_message = str(event.message.message.replace(pattern,''))
+                prompts = callback(input_message)
+                prompts.append({"role":"user","content":input_message})
                 self.sessions.createSession(event.message.id,str(event.message.message.replace(pattern,'')))
                 reply = actions.generateReply(prompts)
                 self.sessions.addMessageToSession(event.message.id, reply['content'], "assistant")

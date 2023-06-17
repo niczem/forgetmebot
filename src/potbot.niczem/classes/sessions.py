@@ -21,6 +21,7 @@ class Sessions:
         messages = [{"role": "user", "content": message}]
         self.writeSession(session_id,{"messages":messages})
     def addMessageToSession(self,session_id, message, role="user"):
+        print("add message to session")
         session = self.getSession(session_id)
         if session:
             session['messages'].append({"role":role,"content":str(message)})
