@@ -6,10 +6,12 @@ class Sessions:
         self.sessions = {}
         print("session class inited")
     def writeSession(self,session_id,session):
+        print("write session")
         json_object = json.dumps(session)
         with open(session_path+str(session_id)+".json", "w") as outfile:
             outfile.write(json_object)
     def getSession(self,session_id):
+        print("get session")
         try:
             f = open(session_path+str(session_id)+".json")
         except:
@@ -22,6 +24,7 @@ class Sessions:
         self.writeSession(session_id,{"messages":messages})
     def addMessageToSession(self,session_id, message, role="user"):
         print("add message to session")
+        print(message)
         session = self.getSession(session_id)
         if session:
             session['messages'].append({"role":role,"content":str(message)})

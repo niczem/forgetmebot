@@ -73,14 +73,14 @@ class Connector:
 
                         new_message = actions.generateReply(self.sessions.getSession(new_message_id)['messages'])
 
-                        self.sessions.addMessageToSession(new_message_id, new_message['content'], "assistant")
-                        reply = str(new_message['content'])
+                        self.sessions.addMessageToSession(new_message_id, new_message, "assistant")
+                        reply = str(new_message)
                         
                     else:
                         self.sessions.createSession(event.message.id,message)
                         reply = actions.generateReply(self.sessions.getSession(event.message.id)['messages'])
-                        self.sessions.addMessageToSession(event.message.id, reply['content'], "assistant")
-                        reply = reply["content"]
+                        self.sessions.addMessageToSession(event.message.id, reply, "assistant")
+                        reply = reply
                         #reply = gptj.chat_completion(sessions[event.message.id])
 
                     # Reply to the message

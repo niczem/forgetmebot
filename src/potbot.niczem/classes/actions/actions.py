@@ -29,11 +29,15 @@ class Context:
 class Actions:
     def __init__(self):
         load_dotenv()
-        self.gptj = GPT4All(os.getenv('model'))
+        self.gptj = GPT4All(model_name=os.getenv('model'))
     
     def generateReply(self,messages):
-            reply = self.gptj.chat_completion(messages)
-            return reply["choices"][0]["message"]
+            print(messages)
+            with  self.gptj.chat_session():
+                response1 = self.gptj.generate(prompt=messages[-1]['content'], temp=0)
+                print(self.gptj.current_chat_session,)
+            return response1
+    
     def loadActions(self,messageCallback):
         # Event handler for incoming messages and message replies
         def getUrl(message):
